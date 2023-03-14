@@ -1,0 +1,3 @@
+- [ ] Add /exercise/<id>/tags end points
+- [ ] Add unit testing
+- [ ] Workout what you want from endpoints

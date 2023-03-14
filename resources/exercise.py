@@ -3,8 +3,8 @@ from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
-from schemes import ExercisesSchema
-from models import ExerciseModel
+from schemes import ExercisesSchema, ExerciseUpdateSchema
+from models import ExerciseModel, TagModel
 
 blp = Blueprint("Exercise", __name__, description="Operations on Exercises")
 
@@ -15,11 +15,13 @@ class ExercisesList(MethodView):
     def get(self):
         return ExerciseModel.query.all()
 
-    @blp.arguments(ExercisesSchema)
+    @blp.arguments(ExerciseUpdateSchema)
     @blp.response(201, ExercisesSchema)
     def post(self, exercise_data):
-        exercise = ExerciseModel(**exercise_data)
-
+        exercise = ExerciseModel(name=exercise_data["name"])
+        if exercise_data.get("tags"):
+            tags = [TagModel.query.get_or_404(tag) for tag in exercise_data["tags"]]
+            exercise.tags = tags
         try:
             db.session.add(exercise)
             db.session.commit()
@@ -36,13 +38,15 @@ class Exercises(MethodView):
         exercise = ExerciseModel.query.get_or_404(exercise_id)
         return exercise
 
-    @blp.arguments(ExercisesSchema)
+    @blp.arguments(ExerciseUpdateSchema)
     @blp.response(200, ExercisesSchema)
     def put(self, exercise_data, exercise_id):
         exercise = ExerciseModel.query.get_or_404(exercise_id)
+        tags = [TagModel.query.get_or_404(tag) for tag in exercise_data["tags"]]
 
         if exercise:
             exercise.name = exercise_data["name"]
+            exercise.tags = tags
         else:
             exercise = ExerciseModel(id=exercise_id, **exercise_data)
 

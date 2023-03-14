@@ -64,3 +64,8 @@ class LogTag(MethodView):
             abort(500, message=str(e))
 
         return {"message": "Tag Removed"}
+
+
+# @blp.route("/exercise/<string:exercise_id>/tags")
+# class ExerciseTags(MethodView):
+#     pass

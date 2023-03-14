@@ -52,7 +52,11 @@ class TagSchema(PlainTagSchema):
 
 
 class ExercisesSchema(PlainExercisesSchema):
-    tags = fields.List(fields.Nested(TagSchema()), dump_only=True)
+    tags = fields.List(fields.Nested(PlainTagSchema()), dump_only=True)
+
+
+class ExerciseUpdateSchema(ExercisesSchema):
+    tags = fields.List(fields.Int)
 
 
 class WorkoutActivitiesSchema(PlainWorkoutActivitiesSchema):
