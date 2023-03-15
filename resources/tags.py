@@ -65,7 +65,8 @@ class LogTag(MethodView):
 
         return {"message": "Tag Removed"}
 
-
+# TODO: Add /exercise/<id>/tags end points
 # @blp.route("/exercise/<string:exercise_id>/tags")
 # class ExerciseTags(MethodView):
 #     pass
+
